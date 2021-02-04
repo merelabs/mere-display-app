@@ -31,12 +31,11 @@ void Client::authenticate(const std::string &user, const std::string &pass)
 {
     if (!m_ready)
     {
-        emit authenticated(false, "Client and server connection is not ready.");
+        emit action(false, "Client and server connection is not ready.");
         return;
     }
 
     m_client->service("auth")->method("authenticate")->with({QString::fromStdString(user), QString::fromStdString(pass)})->call([](QVariant res, QVariant err, void *context){
-        qDebug() << "Got it:" << res;
         Client *client = static_cast<Client*>(context);
         if (!client) return;
 
@@ -48,7 +47,58 @@ void Client::authenticate(const std::string &user, const std::string &pass)
         else
             message = "Unable to authenticate user.";
 
-        client->authenticated(false, message);
+        client->action(ok, message);
+
+    }, (void*) this);
+}
+
+void Client::reboot(int time)
+{
+    if (!m_ready)
+    {
+        emit action(false, "Client and server connection is not ready.");
+        return;
+    }
+
+    m_client->service("power")->method("reboot")->with({QVariant(time)})->call([](QVariant res, QVariant err, void *context){
+        Client *client = static_cast<Client*>(context);
+        if (!client) return;
+
+        bool ok = res.toBool();
+
+        std::string message;
+        if(ok)
+            message = "System is rebooting now....";
+        else
+            message = "Unable to reboot the system.";
+
+        client->action(ok, message);
+
+    }, (void*) this);
+
+}
+
+void Client::shutdown(int time)
+{
+    if (!m_ready)
+    {
+        emit action(false, "Client and server connection is not ready.");
+        return;
+    }
+
+    m_client->service("power")->method("reboot")->with({QVariant(time)})->call([](QVariant res, QVariant err, void *context){
+        Client *client = static_cast<Client*>(context);
+        if (!client) return;
+
+        bool ok = res.toBool();
+
+        std::string message;
+        if(ok)
+            message = "System is shuting down now....";
+        else
+            message = "Unable to shutdown the system.";
+
+        client->action(ok, message);
 
     }, (void*) this);
 }

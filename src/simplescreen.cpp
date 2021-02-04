@@ -123,8 +123,8 @@ void SimpleScreen::initFooterUI()
     hLayout->addItem(hSpacer);
 
     QPushButton *rebootButton = new QPushButton(QIcon(":/display/reboot.png"), "Reboot", this);
+    rebootButton->setFocusPolicy(Qt::NoFocus);
     rebootButton->setFlat(true);
-
     hLayout->addWidget(rebootButton);
 
     QFrame *vLine = new QFrame(this);
@@ -134,9 +134,13 @@ void SimpleScreen::initFooterUI()
     hLayout->addWidget(vLine);
 
     QPushButton *powerOffButton = new QPushButton(QIcon(":/display/poweroff.png"), "Power Off", this);
+    powerOffButton->setFocusPolicy(Qt::NoFocus);
     powerOffButton->setFlat(true);
 
     hLayout->addWidget(powerOffButton);
+
+    connect(rebootButton, SIGNAL(released()), this, SLOT(reboot()));
+    connect(powerOffButton, SIGNAL(released()), this, SLOT(shutdown()));
 }
 
 void SimpleScreen::setErrorMessage(const QString &message)

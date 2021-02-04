@@ -35,6 +35,8 @@ void Screen::initUI()
 {
     m_screen = new SimpleScreen(this);
     connect(m_screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SIGNAL(authenticate(const std::string &, const std::string &)));
+    connect(m_screen, SIGNAL(reboot(int)), this, SIGNAL(reboot(int)));
+    connect(m_screen, SIGNAL(shutdown(int)), this, SIGNAL(shutdown(int)));
 
     layout()->addWidget(m_screen);
 }
@@ -54,12 +56,7 @@ const QString Screen::session() const
     return "mere-session";
 }
 
-void Screen::loginFailed()
-{
-    m_screen->setErrorMessage("Unable to authenticate!");
-}
-
-void Screen::authenticated(bool ok, const std::string &message)
+void Screen::action(bool ok, const std::string &message)
 {
     m_screen->setErrorMessage(QString::fromStdString(message));
 }

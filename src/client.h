@@ -14,11 +14,11 @@ public:
     explicit Client(QObject *parent = nullptr);
 
     void authenticate(const std::string &user, const std::string &pass);
+    void reboot(int time);
+    void shutdown(int time);
 
 signals:
-    void loginFailed();
-    void loginSucceed();
-    void authenticated(bool ok, const std::string &message);
+    void action(bool ok, const std::string &message);
 
 private:
     bool m_ready;

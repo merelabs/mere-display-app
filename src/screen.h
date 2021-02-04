@@ -1,5 +1,5 @@
-#ifndef MEREDISPLAYSCREEN_H
-#define MEREDISPLAYSCREEN_H
+#ifndef MERE_DISPLAY_SCREEN_H
+#define MERE_DISPLAY_SCREEN_H
 
 #include "mere/display/prompt.h"
 #include "mere/auth/user/user.h"
@@ -22,15 +22,15 @@ private:
     void initUI();
 
 public slots:
-    void loginFailed();
-    void authenticated(bool ok, const std::string &message);
+    void action(bool ok, const std::string &message);
 
 signals:
-    void authenticated(Mere::Auth::User &user);
     void authenticate(const std::string &username, const std::string &password);
+    void reboot(int time);
+    void shutdown(int time);
 
 private:
     SimpleScreen *m_screen;
 };
 
-#endif // MEREDISPLAYSCREEN_H
+#endif // MERE_DISPLAY_SCREEN_H
