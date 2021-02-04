@@ -12,6 +12,9 @@ public:
 
     void initUI();
 
+    void setErrorMessage(const QString &message);
+    void setTipOfTheDay(const QString &tip);
+
 private:
     void initHeaderUI();
     void initContentUI();

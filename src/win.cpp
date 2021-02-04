@@ -29,6 +29,7 @@ Win::Win(QWidget *parent) : QWidget(parent)
 
     m_client = new Client();
     connect(m_client, SIGNAL(loginFailed()), m_screen, SLOT(loginFailed()));
+    connect(m_client, SIGNAL(authenticated(bool, const std::string &)), m_screen, SLOT(authenticated(bool, const std::string &)));
 }
 
 void Win::authenticate(const std::string &username, const std::string &password) const

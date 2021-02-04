@@ -8,6 +8,7 @@
 SimpleScreen::SimpleScreen(QWidget *parent)
     : QWidget(parent)
 {
+    setObjectName("SimpleScreen");
     QVBoxLayout *layout = new QVBoxLayout();
     setLayout(layout);
 
@@ -37,10 +38,9 @@ void SimpleScreen::initHeaderUI()
 
 void SimpleScreen::initContentUI()
 {
+    QWidget *content = new QWidget(this);
     QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setAlignment(Qt::AlignCenter);
-
-    QWidget *content = new QWidget(this);
     content->setLayout(vLayout);
     layout()->addWidget(content);
 
@@ -58,18 +58,18 @@ void SimpleScreen::initContentUI()
     vLayout->addWidget(logo);
 
     QWidget *loginForm = new QWidget(this);
-    loginForm->setObjectName("loginForm");
+    loginForm->setObjectName("SimpleScreenForm");
     loginForm->setMinimumSize(350, 150);
-    loginForm->setMaximumSize(350, 200);
+    loginForm->setMaximumSize(400, 200);
 
     loginForm->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     vLayout->addWidget(loginForm);
 
 
     QGridLayout *contentLayout = new QGridLayout(loginForm);
-    contentLayout->setContentsMargins(35, 35, 35, 35);
+    contentLayout->setContentsMargins(50, 35, 50, 35);
     contentLayout->setRowMinimumHeight(2, 20);
-    contentLayout->setHorizontalSpacing(10);
+    contentLayout->setHorizontalSpacing(15);
     contentLayout->setVerticalSpacing(10);
 
     QLabel *usernameLabel = new QLabel("Username");
@@ -82,16 +82,22 @@ void SimpleScreen::initContentUI()
     contentLayout->addWidget(passwordLabel, 1, 0);
 
     m_passwordEdit = new QLineEdit();
+    m_passwordEdit->setObjectName("SimpleScreenFormPassword");
     m_passwordEdit->setEchoMode(QLineEdit::Password);
     contentLayout->addWidget(m_passwordEdit, 1, 1);
 
     QPushButton *loginButton = new QPushButton("Login");
-    loginButton->setObjectName("loginButton");
+    loginButton->setObjectName("SimpleScreenFormButton");
     contentLayout->addWidget(loginButton, 3, 0, 1, 2);
 
     loginForm->setLayout(contentLayout);
 
     connect(loginButton, SIGNAL(released()), this, SLOT(authenticate()));
+
+    QLabel *actionLabel = new QLabel("");
+    actionLabel->setObjectName("SimpleScreenFormError");
+    actionLabel->setAlignment(Qt::AlignHCenter);
+    vLayout->addWidget(actionLabel);
 }
 
 void SimpleScreen::initFooterUI()
@@ -133,8 +139,22 @@ void SimpleScreen::initFooterUI()
     hLayout->addWidget(powerOffButton);
 }
 
+void SimpleScreen::setErrorMessage(const QString &message)
+{
+    QLabel *errorMessage = this->findChild<QLabel* >("SimpleScreenFormError");
+    errorMessage->setText(message);
+}
+
+void SimpleScreen::setTipOfTheDay(const QString &tip)
+{
+
+}
+
 void SimpleScreen::authenticate()
 {
+    QLabel *errorMessage = this->findChild<QLabel* >("SimpleScreenFormError");
+    errorMessage->setText("");
+
     const std::string &username = m_usernameEdit->text().toStdString();
     const std::string &password = m_passwordEdit->text().toStdString();
     emit authenticate(username, password);

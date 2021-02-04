@@ -13,13 +13,15 @@ public:
     ~Client();
     explicit Client(QObject *parent = nullptr);
 
-    void authenticate(const std::string &user, const std::string &pass) const;
+    void authenticate(const std::string &user, const std::string &pass);
 
 signals:
     void loginFailed();
     void loginSucceed();
+    void authenticated(bool ok, const std::string &message);
 
 private:
+    bool m_ready;
     Mere::RPC::Client *m_client;
 };
 

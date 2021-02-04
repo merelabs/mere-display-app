@@ -19,28 +19,36 @@ Client::Client(QObject *parent)
     try
     {
         m_client = new Mere::RPC::Client("mms://display");
+        m_ready = true;
     }
     catch(...)
     {
-        // catch exception
-        qDebug() << ".......";
+        m_ready = false;
     }
 }
 
-void Client::authenticate(const std::string &user, const std::string &pass) const
+void Client::authenticate(const std::string &user, const std::string &pass)
 {
+    if (!m_ready)
+    {
+        emit authenticated(false, "Client and server connection is not ready.");
+        return;
+    }
+
     m_client->service("auth")->method("authenticate")->with({QString::fromStdString(user), QString::fromStdString(pass)})->call([](QVariant res, QVariant err, void *context){
         qDebug() << "Got it:" << res;
+        Client *client = static_cast<Client*>(context);
+        if (!client) return;
 
         bool ok = res.toBool();
-        Client *client = static_cast<Client*>(context);
-        if (client)
-        {
-            if(ok)
-                client->loginSucceed();
-            else
-                client->loginFailed();
-        }
+
+        std::string message;
+        if(ok)
+            message = "Succeed to authenticate user.";
+        else
+            message = "Unable to authenticate user.";
+
+        client->authenticated(false, message);
 
     }, (void*) this);
 }

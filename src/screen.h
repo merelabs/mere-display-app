@@ -4,8 +4,7 @@
 #include "mere/display/prompt.h"
 #include "mere/auth/user/user.h"
 
-#include <QDebug>
-#include <QLineEdit>
+class SimpleScreen;
 
 class Screen : public Mere::Display::Prompt
 {
@@ -24,16 +23,14 @@ private:
 
 public slots:
     void loginFailed();
+    void authenticated(bool ok, const std::string &message);
 
 signals:
     void authenticated(Mere::Auth::User &user);
     void authenticate(const std::string &username, const std::string &password);
 
-
-
 private:
-    QLineEdit m_username;
-    QLineEdit m_password;
+    SimpleScreen *m_screen;
 };
 
 #endif // MEREDISPLAYSCREEN_H

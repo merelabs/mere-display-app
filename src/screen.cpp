@@ -33,20 +33,20 @@ void Screen::init()
 
 void Screen::initUI()
 {
-    SimpleScreen *screen = new SimpleScreen(this);
-    connect(screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SIGNAL(authenticate(const std::string &, const std::string &)));
+    m_screen = new SimpleScreen(this);
+    connect(m_screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SIGNAL(authenticate(const std::string &, const std::string &)));
 
-    layout()->addWidget(screen);
+    layout()->addWidget(m_screen);
 }
 
 const QString Screen::username() const
 {
-    return m_username.text();
+    return "";
 }
 
 const QString Screen::password() const
 {
-    return m_password.text();
+    return "";
 }
 
 const QString Screen::session() const
@@ -56,9 +56,10 @@ const QString Screen::session() const
 
 void Screen::loginFailed()
 {
-    QMessageBox::information(
-        this,
-        tr("Application Name"),
-        tr("An information message.") );
+    m_screen->setErrorMessage("Unable to authenticate!");
 }
 
+void Screen::authenticated(bool ok, const std::string &message)
+{
+    m_screen->setErrorMessage(QString::fromStdString(message));
+}
