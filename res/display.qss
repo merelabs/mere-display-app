@@ -1,17 +1,16 @@
 /*
+
 * {
   background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4, radius: 1.35, stop: 0 #fff, stop: 1 #888);
   color: rgb(255, 255, 255);
   border: 1px solid #ffffff;
 }
-//*/
+*/
 
-#MereDisplayScreen
+#MereDisplayWin
 {
     background-color: #002E63;
 }
-
-#Xfooter { background-color: qlineargradient(spread:reflect, x1:0.5, y1:0, x2:0, y2:0, stop:0 rgba(91, 204, 233, 100), stop:1 rgba(32, 80, 96, 100)); }
 
 #loginForm
 {

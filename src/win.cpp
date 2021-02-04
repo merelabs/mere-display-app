@@ -1,9 +1,25 @@
 #include "win.h"
 
 #include <QVBoxLayout>
+
+Win::~Win()
+{
+    if (m_screen)
+    {
+        delete m_screen;
+        m_screen = nullptr;
+    }
+
+    if (m_client)
+    {
+        delete m_client;
+        m_client = nullptr;
+    }
+}
+
 Win::Win(QWidget *parent) : QWidget(parent)
 {
-    qDebug() << "???????????????????";
+    setObjectName("MereDisplayWin");
     setLayout(new QVBoxLayout);
 
     m_screen = new Screen;
@@ -17,6 +33,5 @@ Win::Win(QWidget *parent) : QWidget(parent)
 
 void Win::authenticate(const std::string &username, const std::string &password) const
 {
-    qDebug() << "AUTHENTICATE?";
     m_client->authenticate(username, password);
 }

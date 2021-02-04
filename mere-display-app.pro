@@ -1,6 +1,6 @@
 #include(../mere-display-lib/mere-display-lib.pri)
 
-QT       += core gui
+QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = menshen
@@ -12,7 +12,6 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
- Input
 SOURCES += \
     src/app.cpp \
     src/client.cpp \
@@ -36,8 +35,7 @@ RESOURCES += \
 
 INCLUDEPATH += /usr/local/include
 
-#LIBS += -lutil -lrt
-LIBS += -lmere-display -lmere-rpc -lmere-utils
+LIBS += -lmere-display -lmere-rpc -lmere-widgets -lmere-utils
 
 #
 # Install
@@ -48,6 +46,5 @@ unix{
 }
 
 DISTFILES += \
-    res/display.html \
     res/display.qss
 

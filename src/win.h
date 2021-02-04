@@ -10,6 +10,7 @@ class Win : public QWidget
 {
     Q_OBJECT
 public:
+    ~Win();
     explicit Win(QWidget *parent = nullptr);
 
 signals:

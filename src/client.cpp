@@ -12,10 +12,10 @@ Client::~Client()
     }
 }
 
-Client::Client(QObject *parent) : QObject(parent)
+Client::Client(QObject *parent)
+    : QObject(parent),
+      m_client(nullptr)
 {
-    // A client pointing to the service path
-    // service path = /server/service
     try
     {
         m_client = new Mere::RPC::Client("mms://display");
@@ -23,6 +23,7 @@ Client::Client(QObject *parent) : QObject(parent)
     catch(...)
     {
         // catch exception
+        qDebug() << ".......";
     }
 }
 
