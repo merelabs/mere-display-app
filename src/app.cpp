@@ -1,5 +1,7 @@
 #include "app.h"
 
+#include <QScreen>
+
 App::~App()
 {
     if(m_win)
@@ -24,7 +26,10 @@ void App::init()
 
 void App::start()
 {
-    m_win->showFullScreen();
+    // hanlde primary screen change
+    QScreen *screen = QGuiApplication::primaryScreen();
+    m_win->setGeometry(screen->geometry());
+    m_win->show();
 }
 
 void App::stop()

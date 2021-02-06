@@ -39,6 +39,8 @@ void Screen::initUI()
     connect(m_screen, SIGNAL(shutdown(int)), this, SIGNAL(shutdown(int)));
 
     layout()->addWidget(m_screen);
+
+    showFullScreen();
 }
 
 const QString Screen::username() const

@@ -22,7 +22,7 @@ Win::Win(QWidget *parent) : QWidget(parent)
     setObjectName("MereDisplayWin");
     setLayout(new QVBoxLayout);
 
-    m_screen = new Screen;
+    m_screen = new Screen();
     connect(m_screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SLOT(authenticate(const std::string &, const std::string &)));
     connect(m_screen, SIGNAL(reboot(int)), this, SLOT(reboot(int)));
     connect(m_screen, SIGNAL(shutdown(int)), this, SLOT(shutdown(int)));
