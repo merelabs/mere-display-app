@@ -36,6 +36,7 @@ RESOURCES += \
 INCLUDEPATH += /usr/local/include
 
 LIBS += -lmere-display -lmere-rpc -lmere-widgets -lmere-utils
+#LIBS += -lmere-display -lmere-display-client
 
 #
 # Install
