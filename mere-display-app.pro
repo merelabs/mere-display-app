@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/app.cpp \
     src/client.cpp \
-    src/config.cpp \
     src/main.cpp \
     src/screen.cpp \
     src/simplescreen.cpp \
@@ -25,7 +24,6 @@ SOURCES += \
 HEADERS += \
     src/app.h \
     src/client.h \
-    src/config.h \
     src/screen.h \
     src/simplescreen.h \
     src/win.h
