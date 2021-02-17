@@ -1,8 +1,8 @@
-#include "sessionapp.h"
+#include "displayapp.h"
 
 int main(int argc, char *argv[])
 {
-    SessionApp app(argc, argv);
+    DisplayApp app(argc, argv);
     app.init();
     app.start();
     return app.exec();

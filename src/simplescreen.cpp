@@ -73,14 +73,14 @@ void SimpleScreen::initContentUI()
     contentLayout->setHorizontalSpacing(15);
     contentLayout->setVerticalSpacing(10);
 
-    QLabel *usernameLabel = new QLabel("Username");
+    QLabel *usernameLabel = new QLabel(tr("Username"));
     contentLayout->addWidget(usernameLabel, 0, 0);
 
     m_usernameEdit = new QLineEdit();
     m_usernameEdit->setFocus();
     contentLayout->addWidget(m_usernameEdit, 0, 1);
 
-    QLabel *passwordLabel = new QLabel("Password");
+    QLabel *passwordLabel = new QLabel(tr("Password"));
     contentLayout->addWidget(passwordLabel, 1, 0);
 
     m_passwordEdit = new QLineEdit();

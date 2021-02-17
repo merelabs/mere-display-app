@@ -1,8 +1,8 @@
-#include "win.h"
+#include "displaywin.h"
 
 #include <QVBoxLayout>
 
-Win::~Win()
+DisplayWin::~DisplayWin()
 {
     if (m_screen)
     {
@@ -17,7 +17,7 @@ Win::~Win()
     }
 }
 
-Win::Win(QWidget *parent) : QWidget(parent)
+DisplayWin::DisplayWin(QWidget *parent) : QWidget(parent)
 {
     setObjectName("MereDisplayWin");
     setLayout(new QVBoxLayout);
@@ -33,17 +33,17 @@ Win::Win(QWidget *parent) : QWidget(parent)
     connect(m_client, SIGNAL(action(bool, const std::string &)), m_screen, SLOT(action(bool, const std::string &)));
 }
 
-void Win::authenticate(const std::string &username, const std::string &password) const
+void DisplayWin::authenticate(const std::string &username, const std::string &password) const
 {
     m_client->authenticate(username, password);
 }
 
-void Win::reboot(int time)
+void DisplayWin::reboot(int time)
 {
     m_client->reboot(time);
 }
 
-void Win::shutdown(int time)
+void DisplayWin::shutdown(int time)
 {
     m_client->shutdown(time);
 }

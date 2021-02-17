@@ -6,12 +6,12 @@
 
 #include <QWidget>
 
-class Win : public QWidget
+class DisplayWin : public QWidget
 {
     Q_OBJECT
 public:
-    ~Win();
-    explicit Win(QWidget *parent = nullptr);
+    ~DisplayWin();
+    explicit DisplayWin(QWidget *parent = nullptr);
 
 signals:
 

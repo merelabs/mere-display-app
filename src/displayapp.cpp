@@ -1,8 +1,11 @@
-#include "sessionapp.h"
+#include "displayapp.h"
+
+#include "mere/utils/apputils.h"
+#include "mere/utils/i18nutils.h"
 
 #include <QScreen>
 
-SessionApp::~SessionApp()
+DisplayApp::~DisplayApp()
 {
     if(m_win)
     {
@@ -11,20 +14,25 @@ SessionApp::~SessionApp()
     }
 }
 
-SessionApp::SessionApp(int &argc, char **argv)
+DisplayApp::DisplayApp(int &argc, char **argv)
     : Mere::DefaultApp(argc, argv)
 {
+    Mere::Utils::AppUtils::setAppCode("display");
+
     setAppCode("display");
     setApplicationName("display");
-    m_win = new Win();
+
+    Mere::Utils::I18nUtils::apply();
+
+    m_win = new DisplayWin();
 }
 
-void SessionApp::init()
+void DisplayApp::init()
 {
     Mere::DefaultApp::init();
 }
 
-void SessionApp::start()
+void DisplayApp::start()
 {
     // hanlde primary screen change
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -32,7 +40,7 @@ void SessionApp::start()
     m_win->show();
 }
 
-void SessionApp::stop()
+void DisplayApp::stop()
 {
 
 }
