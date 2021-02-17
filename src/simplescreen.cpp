@@ -1,4 +1,5 @@
 #include "simplescreen.h"
+#include "mere/utils/stringutils.h"
 
 #include <QLabel>
 #include <QDateTime>
@@ -76,6 +77,7 @@ void SimpleScreen::initContentUI()
     contentLayout->addWidget(usernameLabel, 0, 0);
 
     m_usernameEdit = new QLineEdit();
+    m_usernameEdit->setFocus();
     contentLayout->addWidget(m_usernameEdit, 0, 1);
 
     QLabel *passwordLabel = new QLabel("Password");
@@ -92,12 +94,14 @@ void SimpleScreen::initContentUI()
 
     loginForm->setLayout(contentLayout);
 
-    connect(loginButton, SIGNAL(released()), this, SLOT(authenticate()));
-
     QLabel *actionLabel = new QLabel("");
     actionLabel->setObjectName("SimpleScreenFormError");
     actionLabel->setAlignment(Qt::AlignHCenter);
     vLayout->addWidget(actionLabel);
+
+    connect(m_usernameEdit, SIGNAL(returnPressed()), this, SLOT(authenticate()));
+    connect(m_passwordEdit, SIGNAL(returnPressed()), this, SLOT(authenticate()));
+    connect(loginButton, SIGNAL(released()), this, SLOT(authenticate()));
 }
 
 void SimpleScreen::initFooterUI()
@@ -160,7 +164,20 @@ void SimpleScreen::authenticate()
     errorMessage->setText("");
 
     const std::string &username = m_usernameEdit->text().toStdString();
+    if (Mere::Utils::StringUtils::isBlank(username))
+    {
+        errorMessage->setText("No username entered, Please enter username.");
+        m_usernameEdit->setFocus();
+        return;
+    }
+
     const std::string &password = m_passwordEdit->text().toStdString();
+    if (Mere::Utils::StringUtils::isBlank(password))
+    {
+        errorMessage->setText("No password entered, Please enter password.");
+        m_passwordEdit->setFocus();
+        return;
+    }
     emit authenticate(username, password);
 }
 

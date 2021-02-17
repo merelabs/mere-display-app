@@ -13,18 +13,18 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-    src/app.cpp \
     src/client.cpp \
     src/main.cpp \
     src/screen.cpp \
+    src/sessionapp.cpp \
     src/simplescreen.cpp \
     src/win.cpp
 
 
 HEADERS += \
-    src/app.h \
     src/client.h \
     src/screen.h \
+    src/sessionapp.h \
     src/simplescreen.h \
     src/win.h
 

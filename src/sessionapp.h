@@ -4,12 +4,12 @@
 #include "win.h"
 #include "mere/widgets/defaultapp.h"
 
-class App : public Mere::DefaultApp
+class SessionApp : public Mere::DefaultApp
 {
     Q_OBJECT
 public:
-    ~App();
-    explicit App(int &argc, char **argv);
+    ~SessionApp();
+    explicit SessionApp(int &argc, char **argv);
     void init();
     void start();
     void stop();
