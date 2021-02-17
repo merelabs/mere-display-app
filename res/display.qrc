@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/display">
+        <file>display.qss</file>
+        <file>freebsd-logo.png</file>
+        <file>mere-logo.png</file>
+        <file>poweroff.png</file>
+        <file>reboot.png</file>
+    </qresource>
+</RCC>
