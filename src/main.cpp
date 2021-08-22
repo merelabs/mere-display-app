@@ -3,7 +3,12 @@
 int main(int argc, char *argv[])
 {
     DisplayApp app(argc, argv);
-    app.init();
-    app.start();
+    int err = app.init();
+    if (err) ::exit(err);
+
+    err = app.start();
+    if (err) ::exit(err);
+
     return app.exec();
+
 }

@@ -3,7 +3,9 @@
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = menshen
+CONFIG += c++11
+
+TARGET = mere-display
 TEMPLATE = app
 
 DEFINES += APP_CODE=\\\"display\\\"
@@ -13,63 +15,63 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-    src/client.cpp \
-    src/displayapp.cpp \
-    src/displaywin.cpp \
     src/main.cpp \
+    src/client.cpp \
+    src/config.cpp \
     src/screen.cpp \
-    src/simplescreen.cpp
+    src/passer.cpp \
+    src/displayapp.cpp \
+    src/theme.cpp \
+    src/themes/simple/actionview.cpp \
+    src/themes/simple/clockview.cpp \
+    src/themes/simple/promptscreen.cpp \
+    src/themes/simple/sessionview.cpp \
+    src/themes/simple/simplescreen.cpp
 
 
 HEADERS += \
     src/client.h \
-    src/displayapp.h \
-    src/displaywin.h \
+    src/config.h \
+    src/passer.h \
     src/screen.h \
-    src/simplescreen.h
+    src/displayapp.h \
+    src/theme.h \
+    src/themes/simple/actionview.h \
+    src/themes/simple/clockview.h \
+    src/themes/simple/promptscreen.h \
+    src/themes/simple/sessionview.h \
+    src/themes/simple/simplescreen.h
 
 RESOURCES += \
     res/display.qrc
 
 DISTFILES += \
-    res/display.qss
+    etc/display.conf
+    share/mere-logo.png
+    share/freebsd-logo.png
+
+TRANSLATIONS += \
+    i18n/display_bn.ts \
+    i18n/display_en.ts
 
 
 INCLUDEPATH += /usr/local/include
 
-LIBS += -lmere-display -lmere-rpc -lmere-widgets -lmere-utils
-#LIBS += -lmere-display -lmere-display-client
+LIBS += -lmere-config-lite -lmere-rpc -lmere-widgets -lmere-xdg -lmere-utils
 
-
-
-#
-# Generate TS file
-#
-LANGUAGES = en bn
-defineReplace(prependAll) {
-    for(a, $$1): result += $$2$${a}$$3
-    return($$result)
-}
-TRANSLATIONS = $$prependAll(LANGUAGES, i18n/display_, .ts)
-qtPrepareTool(LUPDATE, lupdate)
-command = $$LUPDATE mere-display-app.pro
-system($$command)|error("Failed to run: $$command")
+##
+## TS file(s)
+##
+#qtPrepareTool(LUPDATE, lupdate)
+#command = $$LUPDATE mere-display.pro
+#system($$command)|error("Failed to run: $$command")
 
 #
-# Generate QM file from TS file, and
-# Copy to the resource bundle
+# Generate QM file(s) from TS file(s)
 #
-TRANSLATIONS_FILES =
 qtPrepareTool(LRELEASE, lrelease)
-for(tsfile, TRANSLATIONS) {
-    qmfile = $$tsfile
-    qmfile ~= s,.ts,.qm
-
-    command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
-    system($$command)|error("Failed to run: $$command")
-    TRANSLATIONS_FILES += $$qmfile
-}
-
+command = $$LRELEASE -removeidentical i18n/*.ts
+system($$command)|error("Failed to run: $$command")
 
 #
 # Install
@@ -79,7 +81,16 @@ unix
     target.path = /usr/local/bin
     INSTALLS += target
 
+    config.path = /usr/local/etc/mere/
+    config.files += etc/display.conf
+    INSTALLS += config
+
     i18n.path = /usr/local/share/mere/display/i18n
-    i18n.files = $$TRANSLATIONS_FILES
+    i18n.files = i18n/*.qm
     INSTALLS += i18n
+
+    share.path = /usr/local/share/mere/display/
+    share.files += share/mere-logo.png share/freebsd-logo.png
+    INSTALLS += share
+
 }

@@ -9,21 +9,19 @@ class SimpleScreen : public QWidget
     Q_OBJECT
 public:
     explicit SimpleScreen(QWidget *parent = nullptr);
-
-    void initUI();
+    void init();
 
     void setErrorMessage(const QString &message);
     void setTipOfTheDay(const QString &tip);
 
 private:
+    void initUI();
     void initHeaderUI();
     void initContentUI();
     void initFooterUI();
 
-private slots:
-    void authenticate();
-    void reboot();
-    void shutdown();
+public slots:
+    void action(bool ok, const std::string &message);
 
 signals:
     void authenticate(const std::string &username, const std::string &password);

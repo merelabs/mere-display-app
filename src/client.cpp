@@ -16,6 +16,8 @@ Client::Client(QObject *parent)
     : QObject(parent),
       m_client(nullptr)
 {
+    setObjectName("DisplayClient");
+
     try
     {
         m_client = new Mere::RPC::Client("mms://display");
@@ -31,7 +33,7 @@ void Client::authenticate(const std::string &user, const std::string &pass)
 {
     if (!m_ready)
     {
-        emit action(false, "Client and server connection is not ready.");
+        emit action(false, tr("DisplayClientNotReady").toStdString());
         return;
     }
 
@@ -56,7 +58,7 @@ void Client::reboot(int time)
 {
     if (!m_ready)
     {
-        emit action(false, "Client and server connection is not ready.");
+        emit action(false, tr("DisplayClientNotReady").toStdString());
         return;
     }
 
@@ -82,7 +84,7 @@ void Client::shutdown(int time)
 {
     if (!m_ready)
     {
-        emit action(false, "Client and server connection is not ready.");
+        emit action(false, tr("DisplayClientNotReady").toStdString());
         return;
     }
 

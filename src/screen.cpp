@@ -1,64 +1,85 @@
 #include "screen.h"
-#include "simplescreen.h"
+#include "theme.h"
+#include "config.h"
 
-#include <QRect>
-#include <QDesktopWidget>
-#include <QApplication>
-#include <QTextBrowser>
-#include <QRegularExpression>
+#include "mere/utils/fileutils.h"
+#include "mere/utils/stringutils.h"
+
+#include <iostream>
+#include <QLabel>
+#include <QScreen>
+#include <QWindow>
 #include <QVBoxLayout>
-#include <QTextBlock>
-#include <QMessageBox>
-
-Screen::~Screen()
+#include <QApplication>
+Screen::Screen(QScreen *screen, QWidget *parent)
+    : QWidget(parent),
+      m_screen(screen)
 {
-}
+    setObjectName("DisplayScreen");
 
-Screen::Screen(QWidget *parent)
-    : Prompt(parent)
-{
-    setObjectName(QString::fromUtf8("MereDisplayScreen"));
-
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    setLayout(layout);
+    //setWindowFlags (Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setAutoFillBackground(true);
 
     initUI();
+
+    if(screen == QApplication::primaryScreen())
+        new Theme(screen, this);
 }
 
-void Screen::init()
+void Screen::pass()
 {
-
+    showFullScreen();
+    windowHandle()->setScreen(m_screen);
+    setVisible(true);
 }
 
 void Screen::initUI()
 {
-    m_screen = new SimpleScreen(this);
-    connect(m_screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SIGNAL(authenticate(const std::string &, const std::string &)));
-    connect(m_screen, SIGNAL(reboot(int)), this, SIGNAL(reboot(int)));
-    connect(m_screen, SIGNAL(shutdown(int)), this, SIGNAL(shutdown(int)));
-
-    layout()->addWidget(m_screen);
-
-    showFullScreen();
+    setBackground();
+    setScreenLogo();
 }
 
-const QString Screen::username() const
+void Screen::setBackground()
 {
-    return "";
+    QPalette pal = palette();
+
+    Config *config = Config::instance();
+
+    QColor color = config->screenBackgroundColor();
+    if (color.isValid())
+        pal.setColor(QPalette::Window, color);
+
+    QPixmap pixmap = config->screenBackgroundImage();
+    if (!pixmap.isNull())
+    {
+        pixmap = pixmap.scaled(m_screen->availableVirtualSize(), Qt::IgnoreAspectRatio);
+        pal.setBrush(QPalette::Window, pixmap);
+    }
+
+    setPalette(pal);
 }
 
-const QString Screen::password() const
+void Screen::setScreenLogo()
 {
-    return "";
-}
+    Config *config = Config::instance();
+    if(!config->logoshow()) return;
 
-const QString Screen::session() const
-{
-    return "mere-session";
-}
+    QString logo(config->logo().c_str());
+    if (logo.isEmpty()) return;
 
-void Screen::action(bool ok, const std::string &message)
-{
-    m_screen->setErrorMessage(QString::fromStdString(message));
+    QPixmap pixmap(logo);
+    if (pixmap.isNull())
+    {
+        std::cout << "Unable to create image for screen logo; please check the image path." << logo.toStdString() << std::endl;
+        return;
+    }
+
+    QLabel *label = new QLabel(this);
+    label->setScaledContents(true);
+    label->setMaximumSize(QSize(128, 35));
+    label->setPixmap(pixmap);
+
+    QSize size = m_screen->availableVirtualSize();
+
+    label->move(25, size.height() - label->height() - 25);
 }

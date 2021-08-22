@@ -1,17 +1,17 @@
 #ifndef MEREDISPLAYWIN_H
 #define MEREDISPLAYWIN_H
 
-#include "screen.h"
 #include "client.h"
 
 #include <QWidget>
 
-class DisplayWin : public QWidget
+class SimpleScreen;
+class Theme : public QWidget
 {
     Q_OBJECT
 public:
-    ~DisplayWin();
-    explicit DisplayWin(QWidget *parent = nullptr);
+    ~Theme();
+    explicit Theme(QScreen *screen, QWidget *parent = nullptr);
 
 signals:
 
@@ -21,9 +21,8 @@ public slots:
     void shutdown(int time);
 
 private:
-    Screen *m_screen;
     Client *m_client;
-
+    SimpleScreen *m_screen;
 };
 
 #endif // MEREDISPLAYWIN_H

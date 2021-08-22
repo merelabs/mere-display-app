@@ -1,8 +1,10 @@
-#include "displaywin.h"
+#include "theme.h"
+#include "themes/simple/simplescreen.h"
 
+#include <QScreen>
 #include <QVBoxLayout>
 
-DisplayWin::~DisplayWin()
+Theme::~Theme()
 {
     if (m_screen)
     {
@@ -17,33 +19,38 @@ DisplayWin::~DisplayWin()
     }
 }
 
-DisplayWin::DisplayWin(QWidget *parent) : QWidget(parent)
+Theme::Theme(QScreen *screen, QWidget *parent)
+    : QWidget(parent)
 {
     setObjectName("MereDisplayWin");
-    setLayout(new QVBoxLayout);
+    resize(screen->availableGeometry().size());
 
-    m_screen = new Screen();
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->setContentsMargins(15, 15, 15, 15);
+    setLayout(layout);
+
+    m_screen = new SimpleScreen();
     connect(m_screen, SIGNAL(authenticate(const std::string &, const std::string &)), this, SLOT(authenticate(const std::string &, const std::string &)));
     connect(m_screen, SIGNAL(reboot(int)), this, SLOT(reboot(int)));
     connect(m_screen, SIGNAL(shutdown(int)), this, SLOT(shutdown(int)));
 
-    this->layout()->addWidget(m_screen);
+    layout->addWidget(m_screen);
 
     m_client = new Client();
     connect(m_client, SIGNAL(action(bool, const std::string &)), m_screen, SLOT(action(bool, const std::string &)));
 }
 
-void DisplayWin::authenticate(const std::string &username, const std::string &password) const
+void Theme::authenticate(const std::string &username, const std::string &password) const
 {
     m_client->authenticate(username, password);
 }
 
-void DisplayWin::reboot(int time)
+void Theme::reboot(int time)
 {
     m_client->reboot(time);
 }
 
-void DisplayWin::shutdown(int time)
+void Theme::shutdown(int time)
 {
     m_client->shutdown(time);
 }

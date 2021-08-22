@@ -1,36 +1,25 @@
-#ifndef MERE_DISPLAY_SCREEN_H
-#define MERE_DISPLAY_SCREEN_H
+#ifndef DISPLAYSCREEN_H
+#define DISPLAYSCREEN_H
 
-#include "mere/display/prompt.h"
-#include "mere/auth/user/user.h"
+#include <QWidget>
 
-class SimpleScreen;
-
-class Screen : public Mere::Display::Prompt
+class Screen : public QWidget
 {
     Q_OBJECT
 public:
-    ~Screen() override;
-    explicit Screen(QWidget *parent = nullptr);
-    void init() override;
-
-    const QString username() const override;
-    const QString password() const override;
-    const QString session() const override;
+    explicit Screen(QScreen *screen, QWidget *parent = nullptr);
+    void pass();
 
 private:
     void initUI();
-
-public slots:
-    void action(bool ok, const std::string &message);
+    void setBackground();
+    void setScreenLogo();
 
 signals:
-    void authenticate(const std::string &username, const std::string &password);
-    void reboot(int time);
-    void shutdown(int time);
+    void passed();
 
 private:
-    SimpleScreen *m_screen;
+    QScreen *m_screen;
 };
 
-#endif // MERE_DISPLAY_SCREEN_H
+#endif // DISPLAYSCREEN_H
