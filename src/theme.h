@@ -17,6 +17,7 @@ signals:
 
 public slots:
     void authenticate(const std::string &username, const std::string &password) const;
+    void session(const std::string &session) const;
     void reboot(int time);
     void shutdown(int time);
 

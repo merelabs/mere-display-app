@@ -45,6 +45,11 @@ void Theme::authenticate(const std::string &username, const std::string &passwor
     m_client->authenticate(username, password);
 }
 
+void Theme::session(const std::string &session) const
+{
+    m_client->session(session);
+}
+
 void Theme::reboot(int time)
 {
     m_client->reboot(time);

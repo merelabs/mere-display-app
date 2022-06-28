@@ -54,6 +54,31 @@ void Client::authenticate(const std::string &user, const std::string &pass)
     }, (void*) this);
 }
 
+void Client::session(const std::string &session)
+{
+    if (!m_ready)
+    {
+        emit action(false, tr("DisplayClientNotReady").toStdString());
+        return;
+    }
+
+    m_client->service("session")->method("session")->with({QString::fromStdString(session)})->call([](QVariant res, QVariant err, void *context){
+        Client *client = static_cast<Client*>(context);
+        if (!client) return;
+
+        bool ok = res.toBool();
+
+        std::string message;
+        if(ok)
+            message = "Succeed to set session.";
+        else
+            message = "Unable to set session.";
+
+        client->action(ok, message);
+
+    }, (void*) this);
+}
+
 void Client::reboot(int time)
 {
     if (!m_ready)

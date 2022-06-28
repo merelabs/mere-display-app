@@ -14,6 +14,7 @@ public:
     explicit Client(QObject *parent = nullptr);
 
     void authenticate(const std::string &user, const std::string &pass);
+    void session(const std::string &session);
     void reboot(int time);
     void shutdown(int time);
 
